@@ -5,7 +5,8 @@ import todoAPI from "Services/todoAPI";
 import { Container, Title } from "_PlayGround/StyledComponents/Wrapper.styles";
 import styled from "styled-components";
 import Button from "Components/Button";
-type Props = {};
+import Loading from "Components/Loading";
+import ErrorAPI from "Components/ErrorAPI";
 
 const CardDetail = styled.div`
   border: 2px solid #ccc;
@@ -32,45 +33,56 @@ const StyledButton = styled(Button)`
     border-color: #3399ff;
   }
 `;
-const DetailPage = (props: Props) => {
+const DetailPage = () => {
   const [todo, setTodo] = useState<Todo | null>(null);
+  const [errorDetail, setErrorDetail] = useState(false);
   const { id } = useParams();
 
   const fetchTodoDetails = async (todoId: string) => {
     try {
       const todo = await todoAPI.getTodoDetail(todoId);
       setTodo(todo);
+      setErrorDetail(false);
     } catch (error) {
-      console.log(error);
+      setErrorDetail(true);
     }
   };
   useEffect(() => {
-    fetchTodoDetails(id as any);
+    if (id) {
+      fetchTodoDetails(id);
+    }
   }, [id]);
+  if (errorDetail) {
+    return <ErrorAPI />;
+  }
   return (
     <Container>
       <Title>Details Page</Title>
       <Link to={"/"}>
         <StyledButton>&laquo; Home</StyledButton>
       </Link>
-      <CardDetail>
-        <Paragraph>
-          <TitleKey>Status: </TitleKey>
-          {todo?.completed ? "Completed" : "Not completed"}
-        </Paragraph>
-        <Paragraph>
-          <TitleKey>Id: </TitleKey>
-          {todo?.id}
-        </Paragraph>
-        <Paragraph>
-          <TitleKey>Title: </TitleKey>
-          {todo?.title}
-        </Paragraph>
-        <Paragraph>
-          <TitleKey>UserID: </TitleKey>
-          {todo?.userId}
-        </Paragraph>
-      </CardDetail>
+      {todo ? (
+        <CardDetail>
+          <Paragraph>
+            <TitleKey>Status: </TitleKey>
+            {todo.completed ? "Completed" : "Not completed"}
+          </Paragraph>
+          <Paragraph>
+            <TitleKey>Id: </TitleKey>
+            {todo.id}
+          </Paragraph>
+          <Paragraph>
+            <TitleKey>Title: </TitleKey>
+            {todo.title}
+          </Paragraph>
+          <Paragraph>
+            <TitleKey>UserID: </TitleKey>
+            {todo.userId}
+          </Paragraph>
+        </CardDetail>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 };

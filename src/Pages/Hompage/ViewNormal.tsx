@@ -12,17 +12,17 @@ import {
   Tr,
 } from "_PlayGround/StyledComponents/Table.styles";
 import { Todo } from "../../Interfaces/Todo";
-
+import cn from "classnames";
 type Props = {
   todoList: Todo[];
 };
-type SortKey = keyof Todo;
+type SortKey = keyof Todo | "";
 type SortOrder = "descending" | "ascending";
 
 const ViewNormal = ({ todoList }: Props) => {
   const navigate = useNavigate();
-  const [sortKey, setSortKey] = useState<SortKey>("id");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("ascending");
+  const [sortKey, setSortKey] = useState<SortKey>("");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("descending");
 
   const sortedTodos = () => {
     if (!sortKey) return todoList;
@@ -33,35 +33,30 @@ const ViewNormal = ({ todoList }: Props) => {
     return todoList;
   };
 
-  const handleSortTodo = (columnKey: keyof Todo) => {
+  const handleSortTodo = (columnKey: SortKey) => {
+    if (columnKey === sortKey) {
+      setSortOrder(sortOrder === "ascending" ? "descending" : "ascending");
+    }
     setSortKey(columnKey);
-    setSortOrder(sortOrder === "ascending" ? "descending" : "ascending");
   };
 
+  const classes = (columnKey: SortKey) => {
+    return cn({
+      active: sortKey === columnKey,
+      ascending: sortKey === columnKey && sortOrder === "ascending",
+      descending: !(sortKey === columnKey && sortOrder === "ascending"),
+    });
+  };
   return (
     <Table>
       <Thead>
         <Tr>
           <Th onClick={() => handleSortTodo("id")}>
-            ID{" "}
-            <SortButton
-              className={`${
-                sortKey === "id" && sortOrder === "ascending"
-                  ? "ascending"
-                  : "descending"
-              }`}
-            />
+            ID <SortButton className={classes("id")} />
           </Th>
           <Th>User ID</Th>
           <Th onClick={() => handleSortTodo("title")}>
-            Title{" "}
-            <SortButton
-              className={`${
-                sortKey === "title" && sortOrder === "descending"
-                  ? "descending"
-                  : "ascending"
-              }`}
-            />
+            Title <SortButton className={classes("title")} />
           </Th>
           <Th>Action</Th>
         </Tr>

@@ -1,4 +1,3 @@
-import { MouseEventHandler } from "react";
 import styled from "styled-components";
 export const Table = styled.table`
   width: 100%;
@@ -37,17 +36,23 @@ export const SortButton = styled.div`
   height: 0;
   background-color: transparent;
   cursor: pointer;
-
+  transition: all 0.2s ease-out;
   &.descending {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
 
     border-top: 10px solid #000;
+    &.active {
+      border-top-color: #009900;
+    }
   }
   &.ascending {
     border-left: 10px solid transparent;
     border-right: 10px solid transparent;
 
-    border-bottom: 10px solid black;
+    border-bottom: 10px solid #000;
+    &.active {
+      border-bottom-color: #009900;
+    }
   }
 `;

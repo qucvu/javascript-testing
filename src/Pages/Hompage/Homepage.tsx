@@ -1,3 +1,5 @@
+import ErrorAPI from "Components/ErrorAPI";
+import Loading from "Components/Loading";
 import Tab from "Components/Tabs/Tab";
 import Tabs from "Components/Tabs/Tabs";
 import { useEffect, useState } from "react";
@@ -10,29 +12,38 @@ type Props = {};
 
 const Homepage = (props: Props) => {
   const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [error, setError] = useState(false);
   const fetchToDo = async () => {
     try {
       const data = await todoAPI.getTodoList();
       setTodoList(data);
+      setError(false);
     } catch (error) {
-      console.log(error);
+      setError(true);
     }
   };
   useEffect(() => {
     fetchToDo();
   }, []);
 
+  if (error) {
+    return <ErrorAPI />;
+  }
   return (
     <Container>
       <Title>Home page</Title>
-      <Tabs>
-        <Tab title="View normal">
-          <ViewNormal todoList={todoList} />
-        </Tab>
-        <Tab title="Group By User ID">
-          <UserIdGroup todoList={todoList} />
-        </Tab>
-      </Tabs>
+      {todoList ? (
+        <Tabs>
+          <Tab title="View normal">
+            <ViewNormal todoList={todoList} />
+          </Tab>
+          <Tab title="Group By User ID">
+            <UserIdGroup todoList={todoList} />
+          </Tab>
+        </Tabs>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 };
