@@ -57,8 +57,6 @@ const UserIdGroup = ({ todoList }: Props) => {
           <Tr key={todo.userId}>
             <Td>{todo.userId}</Td>
             <TdTitle>
-              <ul></ul>
-
               {todo.titles.map((title) => (
                 <li key={title.id}>{title.content}</li>
               ))}
