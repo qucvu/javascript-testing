@@ -1,5 +1,5 @@
 import { Todo, TodoByUserId } from "Interfaces/Todo";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   Tbody,

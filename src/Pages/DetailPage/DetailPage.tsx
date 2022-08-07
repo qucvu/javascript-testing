@@ -5,7 +5,7 @@ import todoAPI from "Services/todoAPI";
 import { Container, Title } from "_PlayGround/StyledComponents/Wrapper.styles";
 import styled from "styled-components";
 import Button from "Components/Button";
-import Loading from "Components/Loading";
+import Loading from "Components/LoadingAPI";
 import ErrorAPI from "Components/ErrorAPI";
 
 const CardDetail = styled.div`

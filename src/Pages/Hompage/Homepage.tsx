@@ -1,5 +1,4 @@
 import ErrorAPI from "Components/ErrorAPI";
-import Loading from "Components/Loading";
 import Tab from "Components/Tabs/Tab";
 import Tabs from "Components/Tabs/Tabs";
 import { useEffect, useState } from "react";
@@ -32,18 +31,14 @@ const Homepage = (props: Props) => {
   return (
     <Container>
       <Title>Home page</Title>
-      {todoList ? (
-        <Tabs>
-          <Tab title="View normal">
-            <ViewNormal todoList={todoList} />
-          </Tab>
-          <Tab title="Group By User ID">
-            <UserIdGroup todoList={todoList} />
-          </Tab>
-        </Tabs>
-      ) : (
-        <Loading />
-      )}
+      <Tabs>
+        <Tab title="View normal">
+          <ViewNormal todoList={todoList} />
+        </Tab>
+        <Tab title="Group By User ID">
+          <UserIdGroup todoList={todoList} />
+        </Tab>
+      </Tabs>
     </Container>
   );
 };

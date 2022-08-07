@@ -1,5 +1,4 @@
 import styled from "styled-components";
-type Props = {};
 
 const LoadingItem = styled.div`
   border: 1rem solid #0042a4;
@@ -32,7 +31,7 @@ const LoadingItem = styled.div`
   }
 `;
 
-const Loading = ({}: Props) => {
+const Loading = () => {
   return <LoadingItem />;
 };
 

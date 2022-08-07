@@ -21,24 +21,38 @@ type SortOrder = "descending" | "ascending";
 
 const ViewNormal = ({ todoList }: Props) => {
   const navigate = useNavigate();
+  // const [searchParams, setSearchParams] = useSearchParams();
   const [sortKey, setSortKey] = useState<SortKey>("");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("descending");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("ascending");
 
-  const sortedTodos = () => {
+  const sortedTodos = useCallback(() => {
     if (!sortKey) return todoList;
     const sortedTodos = todoList.sort((current, next) =>
       current[sortKey] > next[sortKey] ? 1 : -1
     );
     if (sortOrder === "descending") return sortedTodos.reverse();
     return todoList;
-  };
+  }, [sortKey, sortOrder, todoList]);
 
-  const handleSortTodo = (columnKey: SortKey) => {
-    if (columnKey === sortKey) {
-      setSortOrder(sortOrder === "ascending" ? "descending" : "ascending");
-    }
+  const handleSortTodos = (columnKey: SortKey) => {
+    setSortOrder(sortOrder === "ascending" ? "descending" : "ascending");
     setSortKey(columnKey);
   };
+  // const isMounted = useRef(false);
+  // useEffect(() => {
+  //   if (!isMounted.current) {
+  //     isMounted.current = true;
+  //     return;
+  //   }
+  //   if (sortOrder && sortKey) {
+  //     setSearchParams({ sortKey, sortOrder });
+  //   }
+  // }, [sortOrder, sortKey]);
+
+  // useEffect(() => {
+  //   setSortKey(searchParams.get("sortKey") as SortKey);
+  //   setSortOrder(searchParams.get("sortOrder") as SortOrder);
+  // }, []);
 
   const classes = (columnKey: SortKey) => {
     return cn({
@@ -47,15 +61,16 @@ const ViewNormal = ({ todoList }: Props) => {
       descending: !(sortKey === columnKey && sortOrder === "ascending"),
     });
   };
+
   return (
     <Table>
       <Thead>
         <Tr>
-          <Th onClick={() => handleSortTodo("id")}>
+          <Th onClick={() => handleSortTodos("id")}>
             ID <SortButton className={classes("id")} />
           </Th>
           <Th>User ID</Th>
-          <Th onClick={() => handleSortTodo("title")}>
+          <Th onClick={() => handleSortTodos("title")}>
             Title <SortButton className={classes("title")} />
           </Th>
           <Th>Action</Th>

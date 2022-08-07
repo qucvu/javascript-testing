@@ -1,6 +1,5 @@
 import ErrorBoundary from "Components/ErrorBoundary/ErrorBoundary";
 import LazyLoad from "Components/LazyLoad";
-import Loading from "Components/Loading";
 import { lazy, Suspense } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
