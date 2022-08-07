@@ -1,25 +1,24 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import ErrorBoundary from "Components/ErrorBoundary/ErrorBoundary";
+import LazyLoad from "Components/LazyLoad";
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+
+const Homepage = lazy(() => import("Pages/Hompage/Homepage"));
+const DetailPage = lazy(() => import("Pages/DetailPage/DetailPage"));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ErrorBoundary>
+      <Suspense fallback={<LazyLoad loading={true} message={"Loading..."} />}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="" element={<Homepage />} />
+            <Route path="details/:id" element={<DetailPage />} />
+            <Route path="*" element={<Navigate to={"/"} />} />
+          </Routes>
+        </BrowserRouter>
+      </Suspense>
+    </ErrorBoundary>
   );
 }
 
