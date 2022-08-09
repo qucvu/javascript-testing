@@ -1,4 +1,5 @@
 import ErrorAPI from "Components/ErrorAPI";
+import Loading from "Components/LoadingAPI";
 import Tab from "Components/Tabs/Tab";
 import Tabs from "Components/Tabs/Tabs";
 import { useEffect, useState } from "react";
@@ -10,7 +11,7 @@ import ViewNormal from "./ViewNormal";
 type Props = {};
 
 const Homepage = (props: Props) => {
-  const [todoList, setTodoList] = useState<Todo[]>([]);
+  const [todoList, setTodoList] = useState<Todo[] | null>(null);
   const [error, setError] = useState(false);
   const fetchToDo = async () => {
     try {
@@ -31,14 +32,18 @@ const Homepage = (props: Props) => {
   return (
     <Container>
       <Title>Home page</Title>
-      <Tabs>
-        <Tab title="View normal">
-          <ViewNormal todoList={todoList} />
-        </Tab>
-        <Tab title="Group By User ID">
-          <UserIdGroup todoList={todoList} />
-        </Tab>
-      </Tabs>
+      {todoList ? (
+        <Tabs>
+          <Tab title="View normal">
+            <ViewNormal todoList={todoList} />
+          </Tab>
+          <Tab title="Group By User ID">
+            <UserIdGroup todoList={todoList} />
+          </Tab>
+        </Tabs>
+      ) : (
+        <Loading />
+      )}
     </Container>
   );
 };

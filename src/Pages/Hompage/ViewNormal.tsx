@@ -63,34 +63,36 @@ const ViewNormal = ({ todoList }: Props) => {
   };
 
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th onClick={() => handleSortTodos("id")}>
-            ID <SortButton className={classes("id")} />
-          </Th>
-          <Th>User ID</Th>
-          <Th onClick={() => handleSortTodos("title")}>
-            Title <SortButton className={classes("title")} />
-          </Th>
-          <Th>Action</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {sortedTodos().map((todo) => (
-          <Tr key={todo.id}>
-            <Td>{todo.id} </Td>
-            <Td>{todo.userId}</Td>
-            <TdTitle>{todo.title}</TdTitle>
-            <Td>
-              <Button onClick={() => navigate(`/details/${todo.id}`)}>
-                View details
-              </Button>
-            </Td>
+    <div>
+      <Table>
+        <Thead>
+          <Tr>
+            <Th onClick={() => handleSortTodos("id")}>
+              ID <SortButton className={classes("id")} />
+            </Th>
+            <Th>User ID</Th>
+            <Th onClick={() => handleSortTodos("title")}>
+              Title <SortButton className={classes("title")} />
+            </Th>
+            <Th>Action</Th>
           </Tr>
-        ))}
-      </Tbody>
-    </Table>
+        </Thead>
+        <Tbody>
+          {sortedTodos().map((todo) => (
+            <Tr key={todo.id}>
+              <Td>{todo.id} </Td>
+              <Td>{todo.userId}</Td>
+              <TdTitle>{todo.title}</TdTitle>
+              <Td>
+                <Button onClick={() => navigate(`/details/${todo.id}`)}>
+                  View details
+                </Button>
+              </Td>
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+    </div>
   );
 };
 

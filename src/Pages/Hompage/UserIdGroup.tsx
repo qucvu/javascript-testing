@@ -1,5 +1,5 @@
 import { Todo, TodoByUserId } from "Interfaces/Todo";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Table,
   Tbody,
@@ -15,7 +15,9 @@ type Props = {
 };
 
 const UserIdGroup = ({ todoList }: Props) => {
-  const [todosByUserId, setTodoByUserId] = useState<TodoByUserId[]>([]);
+  const [todosByUserId, setTodoByUserId] = useState<TodoByUserId[] | null>(
+    null
+  );
   useEffect(() => {
     const todosByUserId = todoList.reduce(
       (resultTodo: TodoByUserId[], todo) => {
@@ -45,26 +47,30 @@ const UserIdGroup = ({ todoList }: Props) => {
     setTodoByUserId(todosByUserId);
   }, [todoList]);
   return (
-    <Table>
-      <Thead>
-        <Tr>
-          <Th>User ID</Th>
-          <Th>Title</Th>
-        </Tr>
-      </Thead>
-      <Tbody>
-        {todosByUserId.map((todo) => (
-          <Tr key={todo.userId}>
-            <Td>{todo.userId}</Td>
-            <TdTitle>
-              {todo.titles.map((title) => (
-                <li key={title.id}>{title.content}</li>
-              ))}
-            </TdTitle>
-          </Tr>
-        ))}
-      </Tbody>
-    </Table>
+    <Fragment>
+      {todosByUserId && (
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>User ID</Th>
+              <Th>Title</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {todosByUserId.map((todo) => (
+              <Tr key={todo.userId}>
+                <Td>{todo.userId}</Td>
+                <TdTitle>
+                  {todo.titles.map((title) => (
+                    <li key={title.id}>{title.content}</li>
+                  ))}
+                </TdTitle>
+              </Tr>
+            ))}
+          </Tbody>
+        </Table>
+      )}
+    </Fragment>
   );
 };
 
